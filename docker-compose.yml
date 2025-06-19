@@ -1,0 +1,27 @@
+
+services:
+  app.cfp:
+      container_name: app.cfp
+      build: .
+      ports:
+        - ${PORT}:${PORT}
+      volumes:
+        - ./:/home/node/app
+      networks:
+        - net_cfp
+  db.cfp:
+    container_name: db.cfp
+    image: postgres:17-alpine
+    ports:
+      - "5440:5432"
+    volumes:
+      - ./data-pg:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=api_cfp
+    networks:
+      - net_cfp
+networks:
+  net_cfp:
+    driver: bridge
