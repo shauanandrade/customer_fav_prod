@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post} from "@nestjs/common";
+import {Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post} from "@nestjs/common";
 import {
     CreateClientUsecase, DeleteClientUsecase,
     FindAllClientUsecase,
@@ -6,6 +6,8 @@ import {
     UpdateClientUsecase
 } from "../../usecases/client";
 import {IsPublic} from "../../../../common/decorator/public.decorator";
+import {CreateInputClientDto} from "../../infra/dtos/client/create-input-client.dto";
+import {ApiResponse} from "@nestjs/swagger";
 
 @IsPublic()
 @Controller('peoples/client')
@@ -31,7 +33,20 @@ export class ClientController {
     }
 
     @Post()
-    async create(@Body() body: any) {
+    @ApiResponse({status: HttpStatus.CREATED, description: 'Create new client usecase',content:{
+        'application/json': {
+            example:{
+                "id": 5,
+                "name": "NOME CLIENTE",
+                "email": "cliente_email@gmail.com",
+                "password": "shauan@123",
+                "createdAt": "2025-06-21T03:35:39.548Z",
+                "updatedAt": "2025-06-21T03:35:39.548Z"
+            }
+        }
+    }
+    })
+    async create(@Body() body: CreateInputClientDto) {
         return await this.createClientUsecase.execute(body);
 
     }

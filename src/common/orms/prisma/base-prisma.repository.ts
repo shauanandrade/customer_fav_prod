@@ -7,11 +7,12 @@ import {BaseResponse} from "../../type/base-response.type";
 export class BasePrismaRepository implements IBaseRepository {
     public model: PrismaService | any;
 
-    async listAll(): Promise<BaseResponse[]> {
+    async listAll(whereOptions?: any): Promise<BaseResponse[]> {
         try {
-            return this.model.findMany();
+            const whereOption = whereOptions || {};
+            return this.model.findMany(whereOption);
         } catch (err) {
-            throw new Error('Erro methodo',{cause: err})
+            throw new Error('Erro methodo', {cause: err})
         }
     }
 
@@ -24,22 +25,22 @@ export class BasePrismaRepository implements IBaseRepository {
             }) as BaseResponse;
         } catch (err) {
             Logger.error({
-                method:"listById",
+                method: "listById",
                 message: err.message,
-            },{cause: err})
-            throw new Error('Error findFirst',{cause: err})
+            }, {cause: err})
+            throw new Error('Error findFirst', {cause: err})
         }
     }
 
     async create(inputData: any): Promise<any> {
         try {
             return this.model.create({data: inputData});
-        }catch(err) {
+        } catch (err) {
             Logger.error({
-                method:"listById",
+                method: "listById",
                 message: err.message,
-            },{cause: err})
-            throw new Error('Error creation',{cause: err})
+            }, {cause: err})
+            throw new Error('Error creation', {cause: err})
         }
     }
 
@@ -51,28 +52,41 @@ export class BasePrismaRepository implements IBaseRepository {
                 },
                 data: inputData
             });
-        }catch(err){
+        } catch (err) {
             Logger.error({
-                method:"update",
+                method: "update",
                 message: err.message,
-            },{cause: err})
-            throw new Error('Error update',{cause: err})
+            }, {cause: err})
+            throw new Error('Error update', {cause: err})
         }
     }
 
-    async delete(id: number): Promise<BaseResponse> {
+    async delete(whereOptions: any): Promise<BaseResponse> {
         try {
-            return this.model.delete({
-                where: {
-                    id: id
-                }
-            });
-        }catch (err){
+            if (!whereOptions) {
+                throw new Error('Params is invalid')
+            }
+            return this.model.delete(whereOptions);
+        } catch (err) {
             Logger.error({
-                method:"delete",
+                method: "delete",
                 message: err.message,
-            },{cause: err})
-            throw new Error('Error delete',{cause: err})
+            }, {cause: err})
+            throw new Error('Error delete', {cause: err})
+        }
+    }
+
+    async exist(whereOptions?: any): Promise<boolean> {
+        try {
+            const result = await this.model.findFirst(whereOptions);
+            return !!result;
+        } catch (err) {
+            Logger.error({
+                method: "delete",
+                message: err.message,
+            }, {cause: err})
+
+            throw new Error('Error delete', {cause: err})
         }
     }
 

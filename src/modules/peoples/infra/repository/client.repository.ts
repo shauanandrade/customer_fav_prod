@@ -23,7 +23,11 @@ export class ClientRepository implements IClientRepository {
             if (!resultCliente) {
                 throw new Error(`Could not find client with id ${id}`);
             }
-            await this.repository.delete(id);
+            await this.repository.delete({
+                where:{
+                    id: Number(id),
+                }
+            });
         }catch(error) {
             throw new Error(error.message);
         }

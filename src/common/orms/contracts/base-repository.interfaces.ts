@@ -1,5 +1,5 @@
 export interface IBaseRepository {
-    listAll(): Promise<any>;
+    listAll(whereOptions?: any): Promise<any>;
 
     listById(id: number): Promise<any>;
 
@@ -7,5 +7,7 @@ export interface IBaseRepository {
 
     update(id: number, inputData: any): Promise<any>;
 
-    delete(id: number): Promise<any>;
+    delete(whereOptions: any): Promise<any>;
+
+    exist(whereOptions: any): Promise<boolean>;
 }
