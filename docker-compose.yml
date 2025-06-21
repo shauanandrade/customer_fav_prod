@@ -4,11 +4,13 @@ services:
       container_name: app.cfp
       build: .
       ports:
-        - ${PORT}:${PORT}
+        - ${APP_PORT}:${APP_PORT}
       volumes:
         - ./:/home/node/app
       networks:
         - net_cfp
+      depends_on:
+        - db.cfp
   db.cfp:
     container_name: db.cfp
     image: postgres:17-alpine
@@ -24,4 +26,4 @@ services:
       - net_cfp
 networks:
   net_cfp:
-    driver: bridge
+    external: true

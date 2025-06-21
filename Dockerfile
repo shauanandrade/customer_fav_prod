@@ -10,3 +10,5 @@ RUN mkdir /home/node/app
 WORKDIR /home/node/app
 
 CMD ["tail","-f","/dev/null"]
+
+
