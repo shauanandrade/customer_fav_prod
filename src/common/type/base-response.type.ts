@@ -1,0 +1,1 @@
+export type BaseResponse =  Record<string, any> | Record<string, any>[] | [] | null;
