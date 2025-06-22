@@ -5,6 +5,7 @@ import {IsEmail, IsNotEmpty, IsStrongPassword} from "class-validator";
 export class CreateInputClientDto {
     @ApiProperty({
         type: "string",
+        example: "Nome Cliente",
         required: true,
         description:"Nome do cliente"
     })
@@ -15,6 +16,7 @@ export class CreateInputClientDto {
 
     @ApiProperty({
         type: "string",
+        example: "cliente@email.com",
         required: true,
         description:"Email utilizado para gera token"
     })
@@ -27,6 +29,7 @@ export class CreateInputClientDto {
     @ApiProperty({
         type: "string",
         minLength: 6,
+        example: "SuaSenh@123",
         required: true,
         description: "Senha de acesso para gera token"
     })

@@ -1,6 +1,6 @@
 import {Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post} from "@nestjs/common";
 import {IsPublic} from "../../../../common/decorator/public.decorator";
-import {ApiParam, ApiResponse} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiParam, ApiResponse} from "@nestjs/swagger";
 import {
     AddFavoriteClientUsecase,
     DeleteFavoriteProductUsecase,
@@ -11,7 +11,6 @@ import {AddProductFavoriteClienteDto} from "../../infra/dtos/favorite/add-produc
 import {ParamsFavoriteClientDto} from "../../infra/dtos/favorite/params-favorite-client.dto";
 import {ResponseFavoriteItensDto} from "../../infra/dtos/favorite/response-favorite-itens.dto";
 
-@IsPublic()
 @Controller('products/favorite')
 export class FavoriteController {
 
@@ -23,6 +22,7 @@ export class FavoriteController {
     ) {
     }
 
+    @ApiBearerAuth('accessToken')
     @ApiResponse({
         status: HttpStatus.OK,
         description: 'Lista os produto favorito do cliente',
@@ -39,6 +39,7 @@ export class FavoriteController {
         return this.getAllFavoriteClientUsecase.execute(clientId);
     }
 
+    @ApiBearerAuth('accessToken')
     @Post()
     @ApiResponse({
         status: HttpStatus.CREATED,
@@ -49,6 +50,7 @@ export class FavoriteController {
         return this.addFavoriteClientUsecase.execute(body)
     }
 
+    @ApiBearerAuth('accessToken')
     @ApiResponse({
         status: HttpStatus.NO_CONTENT, description: 'Remove o produto do favorito do cliente'
     })

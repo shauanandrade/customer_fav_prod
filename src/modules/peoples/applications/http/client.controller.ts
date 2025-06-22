@@ -7,10 +7,11 @@ import {
 } from "../../usecases/client";
 import {IsPublic} from "../../../../common/decorator/public.decorator";
 import {CreateInputClientDto} from "../../infra/dtos/client/create-input-client.dto";
-import {ApiParam, ApiResponse} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiParam, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {ResponseClientsDto} from "../../infra/dtos/client/response-clients.dto";
 import {UpdateInputClientDto} from "../../infra/dtos/client/update-input-client.dto";
 
+@ApiTags('clients')
 @Controller('peoples/client')
 export class ClientController {
 
@@ -23,6 +24,7 @@ export class ClientController {
     ) {
     }
 
+    @ApiBearerAuth('accessToken')
     @ApiResponse({
         status: HttpStatus.OK,
         description: "Lista todos os registro de clientes",
@@ -35,6 +37,7 @@ export class ClientController {
         return await this.findAllClientUsecase.execute();
     }
 
+    @ApiBearerAuth('accessToken')
     @ApiResponse({
         status: HttpStatus.OK,
         description: "Lista o cliente que foi passado",
@@ -86,6 +89,7 @@ export class ClientController {
 
     }
 
+    @ApiBearerAuth('accessToken')
     @ApiResponse({
         status: HttpStatus.OK,
         description: "Atualizar os dados do cliente",
@@ -102,6 +106,7 @@ export class ClientController {
         return this.updateClientUsecase.execute(id, inputClient);
     }
 
+    @ApiBearerAuth('accessToken')
     @ApiResponse({
         status: HttpStatus.OK,
         description: "Delete o Cliente",

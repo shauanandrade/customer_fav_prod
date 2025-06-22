@@ -18,6 +18,14 @@ export class DocumentConfig {
             .setTitle(this.docsConfig.title)
             .setDescription(this.docsConfig.description)
             .setVersion(this.docsConfig.version)
+            .addBearerAuth({
+                    type: "http",
+                    scheme: "bearer",
+                    bearerFormat: "JWT",
+                    in: 'header'
+                },
+                'accessToken'
+            )
             .build();
     }
 }
