@@ -4,7 +4,7 @@ import {ApiResponse} from "@nestjs/swagger";
 import {
     AddFavoriteClientUsecase,
     DeleteFavoriteProductUsecase,
-    GetAllFavoriteClientUsecase
+    GetAllFavoriteClientUsecase, GetAllProductsUsecase
 } from "../../usecases/favorite";
 
 @IsPublic()
@@ -14,8 +14,28 @@ export class FavoriteController {
     constructor(
         private readonly addFavoriteClientUsecase: AddFavoriteClientUsecase,
         private readonly getAllFavoriteClientUsecase: GetAllFavoriteClientUsecase,
-        private readonly deleteFavoriteProductUsecase: DeleteFavoriteProductUsecase
+        private readonly deleteFavoriteProductUsecase: DeleteFavoriteProductUsecase,
+        private readonly getAllProductsUsecase: GetAllProductsUsecase
     ) {
+    }
+
+    @ApiResponse({
+        status: HttpStatus.CREATED, description: 'Create new client usecase', content: {
+            'application/json': {
+                example: {
+                    "id": 5,
+                    "name": "NOME CLIENTE",
+                    "email": "cliente_email@gmail.com",
+                    "password": "shauan@123",
+                    "createdAt": "2025-06-21T03:35:39.548Z",
+                    "updatedAt": "2025-06-21T03:35:39.548Z"
+                }
+            }
+        }
+    })
+    @Get('/products/:id')
+    async getProducts(@Param('id') id?: string | number) {
+        return this.getAllProductsUsecase.execute(id)
     }
 
     @Get(':clientId')
