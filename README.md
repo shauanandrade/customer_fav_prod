@@ -4,6 +4,10 @@ API para gerenciamento dos **produtos favoritos dos clientes**.
 
 > Feita com NestJS, Prisma e PostgreSQL, seguindo boas práticas de arquitetura, Clean Architecture.
 
+## 🚀 Documentação da API
+
+- 🔗 [Documentação Swagger Online](https://seu-dominio.com/api-docs)
+- 📄 [OpenAPI JSON](./swagger.json)
 ---
 
 ## 🚀 Stack Tecnológica
