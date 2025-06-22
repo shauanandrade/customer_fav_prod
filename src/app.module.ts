@@ -7,6 +7,7 @@ import {AuthGuard} from "./common/guards/auth.guard";
 import {APP_GUARD} from "@nestjs/core";
 import {OrmModule} from "./common/orms/orm.module";
 import {ModulesModule} from "./modules/modules.module";
+import {ThrottlerModule} from "@nestjs/throttler";
 
 
 @Module({
@@ -15,7 +16,15 @@ import {ModulesModule} from "./modules/modules.module";
         ConfigModule.forRoot({
             isGlobal: true,
         }),
-        ModulesModule
+        ModulesModule,
+        ThrottlerModule.forRoot({
+            throttlers: [
+                {
+                    ttl: 60000,
+                    limit: 10
+                }
+            ]
+        })
     ],
 })
 export class AppModule {
