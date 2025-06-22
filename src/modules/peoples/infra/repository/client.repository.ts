@@ -10,7 +10,7 @@ export class ClientRepository implements IClientRepository {
     ) {
     }
 
-    findByIdClient(id: number): Promise<any> {
+    findByIdClient(id: number): Promise<BaseResponse> {
         return this.repository.listOne({
             where: {
                 id: Number(id)
@@ -18,11 +18,11 @@ export class ClientRepository implements IClientRepository {
         })
     }
 
-    updateClient(id: number, inputClient: any): Promise<any> {
+    updateClient(id: number, inputClient: any): Promise<BaseResponse> {
         return this.repository.update(id, inputClient);
     }
 
-    async deleteClient(id: number): Promise<any> {
+    async deleteClient(id: number): Promise<void> {
         try {
             const resultCliente = await this.findByIdClient(id);
             if (!resultCliente) {
@@ -45,4 +45,10 @@ export class ClientRepository implements IClientRepository {
     createClient(inputClient: any): Promise<BaseResponse> {
         return this.repository.create(inputClient);
     }
+    existClient(whereOptions: any): Promise<boolean>{
+        return this.repository.exist({
+            where: whereOptions
+        })
+    }
+
 }

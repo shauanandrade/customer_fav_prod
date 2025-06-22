@@ -7,9 +7,10 @@ import {
 } from "../../usecases/client";
 import {IsPublic} from "../../../../common/decorator/public.decorator";
 import {CreateInputClientDto} from "../../infra/dtos/client/create-input-client.dto";
-import {ApiResponse} from "@nestjs/swagger";
+import {ApiParam, ApiResponse} from "@nestjs/swagger";
+import {ResponseClientsDto} from "../../infra/dtos/client/response-clients.dto";
+import {UpdateInputClientDto} from "../../infra/dtos/client/update-input-client.dto";
 
-@IsPublic()
 @Controller('peoples/client')
 export class ClientController {
 
@@ -22,40 +23,95 @@ export class ClientController {
     ) {
     }
 
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: "Lista todos os registro de clientes",
+        type: ResponseClientsDto,
+        isArray: true,
+
+    })
     @Get()
-    async listAll() {
+    async listAll(): Promise<ResponseClientsDto> {
         return await this.findAllClientUsecase.execute();
     }
 
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: "Lista o cliente que foi passado",
+        content: {
+            'application/json': {
+                example: {
+                    "id": 5,
+                    "name": "USUARIO 2",
+                    "email": "usuario@gmail.com",
+                    "createdAt": "2025-06-21T03:35:39.548Z",
+                    "updatedAt": "2025-06-21T03:35:39.548Z"
+                }
+            }
+        }
+    })
+    @ApiParam({
+        name: 'id',
+        required: true,
+        description: 'Id do cliente',
+        example: 1
+    })
     @Get(':id')
     async listById(@Param('id') id: string | number) {
         return await this.findByIdClientUsecase.execute(id);
     }
 
-    @Post()
-    @ApiResponse({status: HttpStatus.CREATED, description: 'Create new client usecase',content:{
-        'application/json': {
-            example:{
-                "id": 5,
-                "name": "NOME CLIENTE",
-                "email": "cliente_email@gmail.com",
-                "password": "shauan@123",
-                "createdAt": "2025-06-21T03:35:39.548Z",
-                "updatedAt": "2025-06-21T03:35:39.548Z"
+    @IsPublic()
+    @ApiResponse({
+        status: HttpStatus.CREATED,
+        description: 'Create new client usecase',
+        type: ResponseClientsDto
+    })
+    @ApiResponse({
+        status: HttpStatus.CONFLICT,
+        description: 'Caso o email já esteja cadastrado ',
+        content:{
+            'application/json': {
+                example: {
+                    "message": "Email já cadastrado",
+                    "error": "Conflict",
+                    "statusCode": 409
+                }
             }
         }
-    }
     })
+    @Post()
     async create(@Body() body: CreateInputClientDto) {
         return await this.createClientUsecase.execute(body);
 
     }
 
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: "Atualizar os dados do cliente",
+        type: ResponseClientsDto
+    })
+    @ApiParam({
+        name: 'id',
+        required: true,
+        description: 'Id do cliente',
+        example: 1
+    })
     @Patch(':id')
-    async update(@Param('id') id: string | number, @Body() body: any) {
-        return this.updateClientUsecase.execute(id, body);
+    async update(@Param('id') id: string | number, @Body() inputClient: UpdateInputClientDto) {
+        return this.updateClientUsecase.execute(id, inputClient);
     }
 
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: "Delete o Cliente",
+    })
+    @ApiParam({
+        name: 'id',
+        required: true,
+        description: 'Id do cliente',
+        example: 1
+    })
     @Delete(':id')
     async delete(@Param('id') id: string | number) {
         return this.deleteClientUsecase.execute(id);

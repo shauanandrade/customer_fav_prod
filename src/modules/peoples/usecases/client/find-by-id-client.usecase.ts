@@ -1,4 +1,4 @@
-import {Inject, Injectable, NotFoundException} from "@nestjs/common";
+import {BadRequestException, Inject, Injectable, NotFoundException} from "@nestjs/common";
 import TOKEN_PEOPLES from "../../infra/contantes/token-people.constants";
 import {IClientRepository} from "./contracts/client-repository.interface";
 import {IFindByIdClient} from "./contracts/find-by-id-client.interface";
@@ -21,7 +21,7 @@ export class FindByIdClientUsecase implements IFindByIdClient {
             if(err instanceof NotFoundException) {
                 throw err;
             }
-            throw err;
+            throw new BadRequestException(err.message);
         }
     }
 }
