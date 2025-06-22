@@ -1,13 +1,15 @@
+import {BaseResponse} from "../../type/base-response.type";
+
 export interface IBaseRepository {
-    listAll(whereOptions?: any): Promise<any>;
+    listAll(whereOptions?: any): Promise<BaseResponse[]>;
 
-    listById(id: number): Promise<any>;
+    listOne(whereOption: any): Promise<BaseResponse>;
 
-    create(inputData: any): Promise<any>;
+    create(inputData: any): Promise<BaseResponse>;
 
-    update(id: number, inputData: any): Promise<any>;
+    update(id: number, inputData: any): Promise<BaseResponse>;
 
-    delete(whereOptions: any): Promise<any>;
+    delete(whereOptions: any): Promise<BaseResponse>;
 
     exist(whereOptions: any): Promise<boolean>;
 }

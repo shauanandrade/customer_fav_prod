@@ -16,13 +16,9 @@ export class BasePrismaRepository implements IBaseRepository {
         }
     }
 
-    async listById(id: number): Promise<BaseResponse> {
+    async listOne(whereOptions: any): Promise<BaseResponse> {
         try {
-            return this.model.findFirst({
-                where: {
-                    id: id
-                }
-            }) as BaseResponse;
+            return this.model.findFirst(whereOptions) as BaseResponse;
         } catch (err) {
             Logger.error({
                 method: "listById",

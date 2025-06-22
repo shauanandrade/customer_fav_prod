@@ -8,7 +8,10 @@ import {TOKEN} from "../constants/tokens.constants";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    constructor(private jwtService: JwtService,private readonly reflector: Reflector,private readonly config: ConfigService) {
+    constructor(
+        private jwtService: JwtService,
+        private readonly reflector: Reflector,
+        private readonly config: ConfigService) {
     }
 
     async canActivate(context: ExecutionContext): Promise<boolean> {

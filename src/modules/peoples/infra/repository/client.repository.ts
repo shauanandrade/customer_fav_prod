@@ -1,5 +1,6 @@
 import {IClientRepository} from "../../usecases/client/contracts/client-repository.interface";
 import {IBaseRepository} from "../../../../common/orms/contracts/base-repository.interfaces";
+import {BaseResponse} from "../../../../common/type/base-response.type";
 
 
 export class ClientRepository implements IClientRepository {
@@ -10,7 +11,11 @@ export class ClientRepository implements IClientRepository {
     }
 
     findByIdClient(id: number): Promise<any> {
-        return this.repository.listById(Number(id))
+        return this.repository.listOne({
+            where: {
+                id: Number(id)
+            }
+        })
     }
 
     updateClient(id: number, inputClient: any): Promise<any> {
@@ -24,20 +29,20 @@ export class ClientRepository implements IClientRepository {
                 throw new Error(`Could not find client with id ${id}`);
             }
             await this.repository.delete({
-                where:{
+                where: {
                     id: Number(id),
                 }
             });
-        }catch(error) {
+        } catch (error) {
             throw new Error(error.message);
         }
     }
 
-    async findAllClient(): Promise<any> {
+    async findAllClient(): Promise<BaseResponse[]> {
         return this.repository.listAll();
     }
 
-    createClient(inputClient: any): Promise<any> {
+    createClient(inputClient: any): Promise<BaseResponse> {
         return this.repository.create(inputClient);
     }
 }

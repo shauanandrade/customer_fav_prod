@@ -1,6 +1,6 @@
 import {NestFactory} from '@nestjs/core';
 import {AppModule} from './app.module';
-import {Logger, LoggerService} from "@nestjs/common";
+import {Logger, LoggerService, ValidationPipe} from "@nestjs/common";
 import * as process from "node:process";
 import {DocumentConfig} from "./common/shared/docs";
 
@@ -9,6 +9,12 @@ async function bootstrap() {
 
     // app.useGlobalGuards();
     const logs: LoggerService = new Logger("Bootstrap");
+
+    app.useGlobalPipes(new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        transform: true,
+    }));
 
     DocumentConfig.bootstrap(app);
 
