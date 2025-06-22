@@ -6,7 +6,7 @@ API para gerenciamento dos **produtos favoritos dos clientes**.
 
 ## 🚀 Documentação da API
 
-- 🔗 [Documentação Swagger Online](https://seu-dominio.com/api-docs)
+- 🔗 [Documentação Swagger Online](https://cfp.saprojetos.dev/docs)
 - 📄 [OpenAPI JSON](./swagger.json)
 ---
 
