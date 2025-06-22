@@ -1,6 +1,6 @@
 import {INestApplication} from "@nestjs/common";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
-
+import * as fs from "node:fs";
 export class DocumentConfig {
     private static path: string = 'docs'
     private static docsConfig: Record<string, any> = {
@@ -27,5 +27,14 @@ export class DocumentConfig {
                 'accessToken'
             )
             .build();
+    }
+
+    static generateFile(app: INestApplication){
+// Após gerar o documento Swagger
+        const document = SwaggerModule.createDocument(app, this.config())
+
+// Salva o JSON no diretório do projeto
+        fs.writeFileSync('./swagger.json', JSON.stringify(document, null, 2));
+
     }
 }

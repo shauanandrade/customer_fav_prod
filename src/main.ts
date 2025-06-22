@@ -17,6 +17,7 @@ async function bootstrap() {
     }));
 
     DocumentConfig.bootstrap(app);
+    DocumentConfig.generateFile(app);
 
     const port = process.env.APP_PORT ?? 3000;
 

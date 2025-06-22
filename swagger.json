@@ -1,0 +1,566 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/peoples/client": {
+      "get": {
+        "operationId": "ClientController_listAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista todos os registro de clientes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResponseClientsDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "clients"
+        ]
+      },
+      "post": {
+        "operationId": "ClientController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInputClientDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Create new client usecase",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseClientsDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Caso o email já esteja cadastrado ",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Email já cadastrado",
+                  "error": "Conflict",
+                  "statusCode": 409
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "clients"
+        ]
+      }
+    },
+    "/peoples/client/{id}": {
+      "get": {
+        "operationId": "ClientController_listById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Id do cliente",
+            "schema": {
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista o cliente que foi passado",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 5,
+                  "name": "USUARIO 2",
+                  "email": "usuario@gmail.com",
+                  "createdAt": "2025-06-21T03:35:39.548Z",
+                  "updatedAt": "2025-06-21T03:35:39.548Z"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "clients"
+        ]
+      },
+      "patch": {
+        "operationId": "ClientController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Id do cliente",
+            "schema": {
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateInputClientDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Atualizar os dados do cliente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseClientsDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "clients"
+        ]
+      },
+      "delete": {
+        "operationId": "ClientController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Id do cliente",
+            "schema": {
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete o Cliente"
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "clients"
+        ]
+      }
+    },
+    "/products/favorite/{clientId}": {
+      "get": {
+        "operationId": "FavoriteController_getFavoriteClient",
+        "parameters": [
+          {
+            "name": "clientId",
+            "required": true,
+            "in": "path",
+            "description": "ID do cliente",
+            "schema": {
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista os produto favorito do cliente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseFavoriteItensDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "Favorite"
+        ]
+      }
+    },
+    "/products/favorite": {
+      "post": {
+        "operationId": "FavoriteController_addFavoriteProduct",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddProductFavoriteClienteDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Adicionar um novo produto a lista de favorito do cliente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseFavoriteDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "Favorite"
+        ]
+      }
+    },
+    "/products/favorite/{clientId}/{productId}": {
+      "delete": {
+        "operationId": "FavoriteController_getDeleteFavorito",
+        "parameters": [
+          {
+            "name": "productId",
+            "required": true,
+            "in": "path",
+            "description": "ID do produto",
+            "schema": {
+              "example": 1
+            }
+          },
+          {
+            "name": "clientId",
+            "required": true,
+            "in": "path",
+            "description": "ID do cliente",
+            "schema": {
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Remove o produto do favorito do cliente"
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "Favorite"
+        ]
+      }
+    },
+    "/authentication/auth": {
+      "post": {
+        "operationId": "AuthController_auth",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthSignInDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Faz a autenticação e gera o token da API",
+            "content": {
+              "application/json": {
+                "example": {
+                  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNoYXVhbkBnbWFpbC5jb20iLCJpYXQiOjE3NTA1NjAzNzYsImV4cCI6MTc1MDU2Mzk3Nn0"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Exibir este erro quando houver problema na  solicitação.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": [
+                    "Email incorreto."
+                  ],
+                  "error": "Bad Request",
+                  "statusCode": 400
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Quando houver falha na autenticação.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Autenticação é invalída.",
+                  "error": "Unauthorized",
+                  "statusCode": 401
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Customer Favorites Products",
+    "description": "This is a custom favourite product",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "accessToken": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "ResponseClientsDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": "1",
+            "description": "Cliente ID"
+          },
+          "name": {
+            "type": "string",
+            "example": "NOME CLIENTE",
+            "description": "Cliente ID"
+          },
+          "email": {
+            "type": "string",
+            "example": "cliente@email.com",
+            "description": "Cliente ID"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2025-06-21T03:35:39.548Z",
+            "description": "Data de Criação do registro"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2025-06-21T03:35:39.548Z",
+            "description": "Data de Modificação do registro"
+          }
+        },
+        "required": [
+          "name",
+          "email"
+        ]
+      },
+      "CreateInputClientDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Nome Cliente",
+            "description": "Nome do cliente"
+          },
+          "email": {
+            "type": "string",
+            "example": "cliente@email.com",
+            "description": "Email utilizado para gera token"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "example": "SuaSenh@123",
+            "description": "Senha de acesso para gera token"
+          }
+        },
+        "required": [
+          "name",
+          "email",
+          "password"
+        ]
+      },
+      "UpdateInputClientDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Nome Cliente",
+            "description": "Nome do cliente"
+          },
+          "email": {
+            "type": "string",
+            "example": "cliente@email.com",
+            "description": "Email utilizado para gera token"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "example": "SuaSenh@123",
+            "description": "Senha de acesso para gera token"
+          }
+        }
+      },
+      "Rating": {
+        "type": "object",
+        "properties": {
+          "rate": {
+            "type": "number",
+            "example": "1"
+          },
+          "count": {
+            "type": "number",
+            "example": "1"
+          }
+        },
+        "required": [
+          "rate",
+          "count"
+        ]
+      },
+      "ResponseFavoriteItensDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": "1"
+          },
+          "title": {
+            "type": "string",
+            "example": "Nome do produto"
+          },
+          "image": {
+            "type": "string",
+            "example": "imagem.jpg"
+          },
+          "price": {
+            "type": "number",
+            "example": "1.50"
+          },
+          "rating": {
+            "$ref": "#/components/schemas/Rating"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "image",
+          "price",
+          "rating"
+        ]
+      },
+      "AddProductFavoriteClienteDto": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "number",
+            "example": 1,
+            "description": "Nome do cliente"
+          },
+          "productId": {
+            "type": "number",
+            "example": 1,
+            "description": "ID do produto"
+          }
+        },
+        "required": [
+          "clientId",
+          "productId"
+        ]
+      },
+      "ResponseFavoriteDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": "1"
+          },
+          "customerId": {
+            "type": "number",
+            "example": "1"
+          },
+          "productId": {
+            "type": "number",
+            "example": "1"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2025-06-22T18:00:01.720Z"
+          }
+        },
+        "required": [
+          "id",
+          "customerId",
+          "productId",
+          "createdAt"
+        ]
+      },
+      "AuthSignInDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      }
+    }
+  }
+}
