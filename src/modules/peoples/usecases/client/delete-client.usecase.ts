@@ -1,17 +1,31 @@
-import {BadRequestException, HttpException, Inject} from "@nestjs/common";
+import {BadRequestException, HttpException, Inject, NotFoundException} from "@nestjs/common";
 import TOKEN_PEOPLES from "../../infra/contantes/token-people.constants";
 import {IClientRepository} from "./contracts/client-repository.interface";
+import {
+    IDeleteFavoriteProductCliente
+} from "./contracts/delete-favorite-product.interface";
 
 
 export class DeleteClientUsecase {
     constructor(
         @Inject(TOKEN_PEOPLES.clientRepository) private readonly repo: IClientRepository,
+        @Inject("IDeleteFavoriteProductCliente") private readonly deleteFavoriteProductCliente: IDeleteFavoriteProductCliente,
     ) {
     }
 
-    execute(id: string | number) {
+    async execute(id: string | number): Promise<void> {
         try {
-            return this.repo.deleteClient(Number(id));
+            const exist = await this.repo.existClient({
+                id: Number(id)
+            });
+
+            if (!exist) {
+                throw new NotFoundException('Cliente não existe');
+            }
+
+            await this.deleteFavoriteProductCliente.execute(Number(id));
+
+            await this.repo.deleteClient(Number(id));
         }catch (err){
             if(err instanceof HttpException) {
                 throw err;

@@ -10,7 +10,7 @@ export class BasePrismaRepository implements IBaseRepository {
     async listAll(whereOptions?: any): Promise<BaseResponse[]> {
         try {
             const whereOption = whereOptions || {};
-            return this.model.findMany(whereOption);
+            return await this.model.findMany(whereOption);
         } catch (err) {
             throw new Error('Erro methodo', {cause: err})
         }
@@ -62,7 +62,7 @@ export class BasePrismaRepository implements IBaseRepository {
             if (!whereOptions) {
                 throw new Error('Params is invalid')
             }
-            return this.model.delete(whereOptions);
+            return this.model.deleteMany(whereOptions);
         } catch (err) {
             Logger.error({
                 method: "delete",

@@ -1,7 +1,9 @@
+import {BaseResponse} from "../../../../../common/type/base-response.type";
+
 export interface IFavoriteRepository {
-    favoriteByClientId(id: number): Promise<any>;
+    favoriteByClientId(id: number): Promise<BaseResponse[]>;
 
-    addProductToClient(inputFavorite: any): Promise<any>;
+    addProductToClient(inputFavorite: any): Promise<BaseResponse>;
 
-    deleteFavoriteProduct(clientId: number,productId: number): Promise<any>;
+    deleteFavoriteProduct(whereOption: any): Promise<void>;
 }

@@ -1,5 +1,6 @@
 import {IFavoriteRepository} from "../../usecases/favorite/contracts/favorite-repository.interface";
 import {IBaseRepository} from "../../../../common/orms/contracts/base-repository.interfaces";
+import {BaseResponse} from "../../../../common/type/base-response.type";
 
 
 export class FavoriteRepository implements IFavoriteRepository {
@@ -31,7 +32,7 @@ export class FavoriteRepository implements IFavoriteRepository {
         }
     }
 
-    async favoriteByClientId(clientId: number): Promise<any> {
+    async favoriteByClientId(clientId: number): Promise<BaseResponse[]> {
         try {
             return await this.repository.listAll({
                 where: {
@@ -44,26 +45,18 @@ export class FavoriteRepository implements IFavoriteRepository {
 
     }
 
-    async deleteFavoriteProduct(clientId: number, productId: number): Promise<any> {
+    async deleteFavoriteProduct(whereOption:any): Promise<void> {
         try {
             const existProduct = await this.repository.exist({
-                where: {
-                    productId: clientId,
-                    customerId: productId,
-                }
+                where: whereOption
             });
 
             if (!existProduct) {
                 throw new Error("Produto não foi encontrado para o cliente.");
             }
 
-            return this.repository.delete({
-                where: {
-                    customerId_productId: {
-                        customerId: clientId,
-                        productId: productId
-                    }
-                }
+            await this.repository.delete({
+                where: whereOption
             })
         } catch (err) {
             throw new Error(err.message);

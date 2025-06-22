@@ -1,10 +1,11 @@
 import {BadRequestException, ConflictException, HttpException, Inject} from "@nestjs/common";
 import TOKEN_PEOPLES from "../../infra/contantes/token-people.constants";
 import {IClientRepository} from "./contracts/client-repository.interface";
-import {CreateInputClientDto} from "../../../products/infra/dtos/client/create-input-client.dto";
+import {AddProductFavoriteClienteDto} from "../../../products/infra/dtos/favorite/add-product-favorite-cliente.dto";
 import {Password} from "../../../../common/value-objects/password.vo";
 import {plainToInstance} from "class-transformer";
 import {ResponseClientsDto} from "../../infra/dtos/client/response-clients.dto";
+import {CreateInputClientDto} from "../../infra/dtos/client/create-input-client.dto";
 
 
 export class CreateClientUsecase {

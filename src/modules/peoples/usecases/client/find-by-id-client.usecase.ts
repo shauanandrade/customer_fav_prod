@@ -1,10 +1,10 @@
 import {BadRequestException, Inject, Injectable, NotFoundException} from "@nestjs/common";
 import TOKEN_PEOPLES from "../../infra/contantes/token-people.constants";
 import {IClientRepository} from "./contracts/client-repository.interface";
-import {IFindByIdClient} from "./contracts/find-by-id-client.interface";
+import {IFindByIdClient} from "../../../products/usecases/favorite/contracts/find-by-id-client.interface";
 
 
-export class FindByIdClientUsecase implements IFindByIdClient {
+export class FindByIdClientUsecase {
     constructor(
         @Inject(TOKEN_PEOPLES.clientRepository) private readonly repo: IClientRepository,
     ) {

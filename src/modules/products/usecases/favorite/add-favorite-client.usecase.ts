@@ -2,7 +2,8 @@ import {BadRequestException, Inject, NotFoundException} from "@nestjs/common";
 import {IFavoriteRepository} from "./contracts/favorite-repository.interface";
 import TOKEN_PRODUCTS from "../../infra/contantes/token-products.constants";
 import {IProductFakestore} from "../../infra/external/contracts/product-fakestore.interface";
-import {IFindByIdClient} from "../../../peoples/usecases/client/contracts/find-by-id-client.interface";
+import {IFindByIdClient} from "./contracts/find-by-id-client.interface";
+import {AddProductFavoriteClienteDto} from "../../infra/dtos/favorite/add-product-favorite-cliente.dto";
 
 
 export class AddFavoriteClientUsecase {
@@ -13,7 +14,7 @@ export class AddFavoriteClientUsecase {
     ) {
     }
 
-    async execute(inputFavorite: any) {
+    async execute(inputFavorite: AddProductFavoriteClienteDto) {
         try {
 
             const clientExist = await this.findByIdClient.execute(inputFavorite.clientId);

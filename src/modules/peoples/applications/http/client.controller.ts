@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post} from "@nestjs/common";
+import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post} from "@nestjs/common";
 import {
     CreateClientUsecase, DeleteClientUsecase,
     FindAllClientUsecase,
@@ -113,6 +113,7 @@ export class ClientController {
         example: 1
     })
     @Delete(':id')
+    @HttpCode(HttpStatus.NO_CONTENT)
     async delete(@Param('id') id: string | number) {
         return this.deleteClientUsecase.execute(id);
     }

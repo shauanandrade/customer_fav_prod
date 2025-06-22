@@ -3,6 +3,7 @@ import {ClientRepository} from "../repository/client.repository";
 import TOKEN_PEOPLES from "../contantes/token-people.constants";
 import {PrismaService} from "../../../../common/orms/prisma/prisma.service";
 import createRepository from "../../../../common/orms/create-repository";
+import {DeleteFavoriteProductClientUsecase} from "../../../products/usecases/favorite";
 
 
 export const PEOPLES_PROVIDER: Provider[] = [
@@ -10,6 +11,10 @@ export const PEOPLES_PROVIDER: Provider[] = [
         TOKEN_PEOPLES.clientRepository,
         (client: PrismaService) => client.customer,
         ClientRepository
-    )
+    ),
+    {
+        provide: "IDeleteFavoriteProductCliente",
+        useClass: DeleteFavoriteProductClientUsecase
+    }
 
 ]

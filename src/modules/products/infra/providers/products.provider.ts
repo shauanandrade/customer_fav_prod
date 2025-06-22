@@ -4,6 +4,7 @@ import {PrismaService} from "../../../../common/orms/prisma/prisma.service";
 import createRepository from "../../../../common/orms/create-repository";
 import TOKEN_PRODUCTS from "../contantes/token-products.constants";
 import {ProductFakestoreExternal} from "../external/product-fakestore.external";
+import {FindByIdClientUsecase} from "../../../peoples/usecases/client";
 
 
 export const PRODUCTS_PROVIDER: Provider[] = [
@@ -15,5 +16,9 @@ export const PRODUCTS_PROVIDER: Provider[] = [
     {
         provide: TOKEN_PRODUCTS.productFakestore,
         useClass: ProductFakestoreExternal
+    },
+    {
+        provide: "IFindByIdClient",
+        useClass: FindByIdClientUsecase,
     }
 ]
