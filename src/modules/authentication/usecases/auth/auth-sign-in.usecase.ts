@@ -1,9 +1,11 @@
-import {BadRequestException, Inject, NotFoundException} from "@nestjs/common";
+import {BadRequestException, Inject, NotFoundException, UnauthorizedException} from "@nestjs/common";
 import TOKEN_AUTHENTICATION from "../../infra/contantes/token-authentication.constants";
 import {IAuthenticationRepository} from "./contracts/authentication-client.interface";
 import {IBaseJwt} from "../../../../common/shared/contracts/base-jwt.interface";
 import {TOKEN} from "../../../../common/constants/tokens.constants";
 import {AuthSignInDto} from "../../infra/dtos/auth/auth-sign-in.dto";
+import {Password} from "../../../../common/value-objects/password.vo";
+import {ResponseAuthDto} from "../../infra/dtos/auth/response-auth.dto";
 
 
 export class AuthSignInUsecase {
@@ -13,12 +15,17 @@ export class AuthSignInUsecase {
     ) {
     }
 
-    async execute(inputAuth: AuthSignInDto): Promise<any> {
+    async execute(inputAuth: AuthSignInDto): Promise<ResponseAuthDto> {
         try {
             const auth = await this.repo.auth(inputAuth.email, inputAuth.password);
 
             if (!auth) {
-                throw new NotFoundException("Autenticação é invalída.");
+                throw new UnauthorizedException("Autenticação é invalída.");
+            }
+
+            const isValid = await new Password(inputAuth.password).compare(auth.password);
+            if (!isValid) {
+                throw new UnauthorizedException("Autenticação é invalída.");
             }
 
             const payload = {
@@ -31,6 +38,9 @@ export class AuthSignInUsecase {
                 accessToken: await this.baseJwt.genToken(payload)
             }
         } catch (err) {
+            if(err instanceof UnauthorizedException) {
+                throw err;
+            }
             throw new BadRequestException(err.message)
         }
     }

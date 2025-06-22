@@ -9,7 +9,9 @@ export class AuthSignInDto {
     @IsNotEmpty({
         message: 'Autenticação é invalída.',
     })
-    @IsEmail()
+    @IsEmail({},{
+        message:"Email incorreto."
+    })
     email: string;
 
     @ApiProperty({
